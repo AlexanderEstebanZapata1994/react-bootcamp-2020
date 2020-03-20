@@ -8,8 +8,9 @@ import UsersList from "./UsersList";
 export interface IUsersProps {}
 
 export interface IUsersState {
-  users: string[];
+  name: string;
   selectedName: string | null;
+  users: string[];
 }
 
 const USERS = [
@@ -58,7 +59,8 @@ export default class Users extends React.Component<IUsersProps, IUsersState> {
     super(props);
     this.state = {
       users: USERS,
-      selectedName: null
+      selectedName: null,
+      name: ""
     };
   }
 
@@ -66,12 +68,22 @@ export default class Users extends React.Component<IUsersProps, IUsersState> {
     this.setState({ selectedName: name });
   };
 
+  handleSubmit = () => {
+    this.setState({
+      users: [...this.state.users, this.state.name]
+    });
+  };
+
+  handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    this.setState({ name: e.target.value });
+  };
+
   render() {
     return (
       <React.Fragment>
         <form>
-          <Input placeholder="name"></Input>
-          <Button>Add</Button>
+          <Input onChange={this.handleChange} placeholder="name" />
+          <Button onClick={this.handleSubmit}>Add</Button>
         </form>
         <UsersList
           users={this.state.users}

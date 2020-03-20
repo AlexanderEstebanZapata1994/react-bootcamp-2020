@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 
@@ -8,10 +8,21 @@ type UsersProps = {
   selectUser: (name: string) => void;
 };
 
+type UsersState = {
+  sortedNames: string[];
+};
+
 export default class UsersList extends React.Component<UsersProps> {
-  state = {
-    sortedNames: this.props.users.slice().sort()
+  state: UsersState = {
+    sortedNames: []
   };
+
+  static getDerivedStateFromProps(props: UsersProps, state: UsersState) {
+    const sortedNames = props.users.slice().sort();
+    return {
+      sortedNames
+    };
+  }
 
   render() {
     const { selectedName, selectUser } = this.props;
